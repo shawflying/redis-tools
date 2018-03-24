@@ -1,6 +1,6 @@
 {
   "name": "redis-tools",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "redis-tools",
   "main": "index.js",
   "scripts": {
@@ -11,12 +11,16 @@
     "type": "git",
     "url": "https://github.com/shawflying/redis-tools.git"
   },
+  "bin": {
+    "redis-tools": "./bin/redis-tools"
+  },
   "author": "shawflying",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.12.4",
     "chai": "^3.5.0",
     "co": "^4.6.0",
+    "commander": "^2.15.1",
     "compression": "^1.6.2",
     "connect-busboy": "0.0.2",
     "connect-mongo": "^0.8.1",
@@ -34,9 +38,6 @@
     "redis": "^2.8.0",
     "request": "2.53.0",
     "response-time": "*",
-    "underscore": "^1.8.3",
-    "utility": "^1.4.0",
-    "validator": "^4.0.0",
-    "yanxxit-reskit": "latest"
+    "underscore": "^1.8.3"
   }
 }
