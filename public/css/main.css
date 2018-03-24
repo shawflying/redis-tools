@@ -1,0 +1,44 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.top {
+    position: absolute;
+    width: 100%;
+    height: 10%;
+    border: 1px solid red;
+    text-align: center;
+}
+
+.top .title{
+    font-size: 20px;
+    position: absolute;
+    width: 30%;
+    left: 35%;
+    top: 10%;
+    border: 1px solid red;
+    text-align: center;
+}
+
+#jstree {
+    border: 1px solid red;
+    position: absolute;
+    width: 48%;
+    height: 90%;
+    top: 10%;
+}
+
+.data {
+    display: block;
+    position: absolute;
+    margin-left: 50%;
+    top: 10%;
+    width: 48%;
+    height: 90%;
+    border: 1px solid red;
+}
+
+.data input {
+    width: 100%;
+}
