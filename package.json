@@ -1,6 +1,6 @@
 {
   "name": "redis-tools",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "redis-tools",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,8 @@
     "url": "https://github.com/shawflying/redis-tools.git"
   },
   "bin": {
-    "redis-tools": "./bin/redis-tools"
+    "redis-tools": "./bin/redis-tools",
+    "rt": "./bin/redis-tools"
   },
   "author": "shawflying",
   "license": "ISC",
@@ -30,7 +31,6 @@
     "eventproxy": "*",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
-    "log4js": "^0.6.22",
     "method-override": "^2.3.5",
     "mocha": "^3.0.2",
     "mochawesome": "^1.5.2",
