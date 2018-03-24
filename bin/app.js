@@ -14,7 +14,7 @@ exports.run = function (port) {
   //在所有网络接口上监听提供的端口号
   server.listen(port, function () {
     console.log('监听日志：' + port);
-    console.log("local: " + config.base_host  + port + '/' + config.app + '/login');
+    console.log("local: " + config.base_host + port + '/' + config.app + '/login');
   });
   server.on('error', exports.onError);
   server.on('listening', function () {// HTTP 服务器的'listening'事件监听器
@@ -56,4 +56,12 @@ exports.onError = function (error) {
     default:
       throw error;
   }
+}
+
+//产生随机数函数
+exports.randomNum = function (n) {
+  var rnd = "";
+  for (var i = 0; i < n; i++)
+    rnd += Math.floor(Math.random() * 10);
+  return rnd;
 }

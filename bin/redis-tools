@@ -3,30 +3,37 @@ var fs = require("fs"),
     path = process.cwd(),
     package = require("../package"),
     config = require("../config"),
+    app = require('./app'),
     exec = require('child_process').exec;
-
-var app = require('./app');
-
 var p = console;
 //执行命令
 var run = function (obj) {
-    p.log(obj);
-    if (obj[0] === '-v') {
+    if (obj[0] === '-v' || obj[0] === '--version') {
         p.log('version is ' + package.version);
-    } else if (obj[0] === '-h') {
-        p.log('Useage:');
-        p.log('  -v --version [show version]');
+    } else if (obj[0] === '-h' || obj[0] === '-h' === "--help") {
+        p.log(`
+        usage: http-server [options]
+
+        options:
+
+            -p --port    Port to use [8080]
+            -v --version show redis-tools 当前版本
+            -a --about   redi 详情信息
+            -h --help    Print this list and exit.
+        `);
     } else if (obj[0] === '-a') {
-        p.log('Useage:');
-        p.log('  -a --about [show about]');
+        fs.readFile("../README.md", { encoding: "utf-8" }, function (err, data) {
+            if (err) return p.log(err)
+            p.log(data)
+        });
     } else if (obj[0] === '-p') {
-        p.log(obj)
-        if (obj.length < 2) return p.log("请输入port");
-        if (obj[1] > 1000) {
+        if (obj.length < 2) {
+            app.run(app.randomNum(5))
+        } else if (obj[1] >= 1000) {
             app.run(obj[1])
+        } else {
+            return p.log("请输入正确的端口号");
         }
-    } else if (obj[0] === '-run') {
-        app.run()
     } else {
         app.run()
     }
