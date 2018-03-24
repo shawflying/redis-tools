@@ -1,1 +1,1 @@
-{"local":{"name":"local","host":"127.0.0.1","port":"6379","db":0},"local22":{"name":"local22","host":"127.0.0.1","port":"6379","db":0},"dev":{"name":"dev","host":"127.0.0.1","port":"6379","db":0},"test":{"name":"test","host":"127.0.0.1","port":"6379","db":0},"dve":{"name":"dve","host":"127.0.0.1","port":"6379","db":0}}
+{}

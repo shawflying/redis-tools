@@ -34,3 +34,5 @@ node_modules
 ##src/views/components/
 
 yarn.lock
+
+db.json

@@ -2,12 +2,16 @@
 var fs = require("fs"),
     path = process.cwd(),
     package = require("../package"),
+    config = require("../config"),
     exec = require('child_process').exec;
+
+var app = require('./app');
+
 var p = console;
 //执行命令
 var run = function (obj) {
     if (obj[0] === '-v') {
-        p.log('version is '+package.version);
+        p.log('version is ' + package.version);
     } else if (obj[0] === '-h') {
         p.log('Useage:');
         p.log('  -v --version [show version]');
@@ -15,22 +19,11 @@ var run = function (obj) {
         p.log('Useage:');
         p.log('  -a --about [show about]');
     } else if (obj[0] === '-run') {
-        var cmdStr = './www';
-        exec(cmdStr, function (err, stdout, stderr) {
-            p.log('监听日志：' + port);
-            p.log("local: " + config.host + '/' + config.app + '/login');
-            if (err) p.log('get weather api error:' + stderr);
-            p.log('监听日志：' + port);
-            p.log("local: " + config.host + '/' + config.app + '/login');
-        });
+        app.run()
     } else {
-        fs.readdir(path, function (err, files) {
-            if (err) return p.log(err);
-            for (var i = 0; i < files.length; i += 1) {
-                p.log(files[i]);
-            }
-        });
+        app.run()
     }
 };
+
 //获取除第一个命令以后的参数，使用空格拆分
 run(process.argv.slice(2)); 
