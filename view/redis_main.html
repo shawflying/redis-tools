@@ -13,7 +13,7 @@
     <link href="https://cdn.bootcss.com/jstree/3.3.5/themes/default/style.min.css" rel="stylesheet">
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jstree/3.3.5/jstree.min.js"></script>
-        <link href="/<%= app %>/public/css/main.css" rel="stylesheet">
+    <link href="/<%= app %>/public/css/main.css?t=<%=new Date().getTime()%>" rel="stylesheet">
 </head>
 
 <style>
@@ -25,9 +25,9 @@
     </div>
     <div id="jstree"></div>
     <div class="data">
-        <input type="text" class="show" placeholder="显示结果">
+        <div contenteditable="true" class="show" placeholder="显示结果"></div>
     </div>
 </body>
 
 </html>
-<script type="text/javascript" src="/<%= app %>/public/main.js"></script>
+<script type="text/javascript" src="/<%= app %>/public/main.js?t=<%=new Date().getTime()%>"></script>
