@@ -3,16 +3,18 @@ var debug = require('debug')('design:server');
 var http = require('http');
 var config = require("../config")
 
-exports.run = function () {
-  // 从系统环境中获取端口设置并保存在项目中
-  var port = exports.normalizePort(process.env.PORT || config.port);
+exports.run = function (port) {
+  if (!port) {
+    // 从系统环境中获取端口设置并保存在项目中
+    port = exports.normalizePort(process.env.PORT || config.port);
+  }
   app.set('port', port);
   // 创建HTTP服务器
   var server = http.createServer(app);
   //在所有网络接口上监听提供的端口号
   server.listen(port, function () {
     console.log('监听日志：' + port);
-    console.log("local: " + config.host + '/' + config.app + '/login');
+    console.log("local: " + config.base_host  + port + '/' + config.app + '/login');
   });
   server.on('error', exports.onError);
   server.on('listening', function () {// HTTP 服务器的'listening'事件监听器

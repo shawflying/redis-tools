@@ -1,9 +1,18 @@
 # redis-tools
+一个简单的web端redis可视化工具
 
+## install 
+npm install -g redis-tools
 
-var RedisClient = redis.createClient({
-        host: '127.0.0.1',
-        port: 6379,
-        db: db,//使用第几个数据库
-        prefix: ''//数据表前辍即schema 表前缀，可以通过这个区分表 默认在所有的地方都加的 ：需要加的，命名空间
-    });
+cnpm install -g redis-tools
+
+## uninstall
+cnpm uninstall -g redis-tools
+
+## use
+
+```
+redis-tools 
+or
+rt
+```

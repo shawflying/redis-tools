@@ -6,6 +6,7 @@ var config = {
     name: 'redis',//项目名称
     description: 'Express 项目模板',
     host: debug ? 'http://127.0.0.1:' + port : 'http://app.yxxit.com',//本地基本授权时，127地址改成本地（192.168.。。）
+    base_host: debug ? 'http://127.0.0.1:' : 'http://app.yxxit.com',//本地基本授权时，127地址改成本地（192.168.。。）
     db_name: 'express_dev',
     session_secret: 'node_wap_secret',//session cookie key
     secretkey: 'express',//node_wap_secret invoice

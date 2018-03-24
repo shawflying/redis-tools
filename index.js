@@ -46,9 +46,4 @@ app.use(function (req, res, next) {
 
 app.use('/', webRouter);//进入路由
 
-// var server = app.listen(config.port, function () {
-//     logger.info('监听日志：' + config.port);
-//     logger.info("local: " + config.host + '/' + config.app + '/main');
-// });
-
 module.exports = app
