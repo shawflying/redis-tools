@@ -10,11 +10,7 @@ var p = console;
 var redis = require('redis');
 
 
-/**
- * 进入首页
- * @param req
- * @param res
- */
+//进入首页
 exports.login = function (req, res) {
     res.render('redis_login', { title: '选择登录' });
 };
@@ -63,7 +59,7 @@ exports.keys = function (req, res) {
     });
 
     RedisClient.on('error', function (err) {
-        console.log('Error ' + err)
+        p.log('Error ' + err)
     });
     RedisClient.keys("**", function (err, data) {
         p.log(err, data)
@@ -79,15 +75,50 @@ exports.values = function (req, res) {
         host: redis_conf.host,
         port: redis_conf.port,
         db: req.body.db,//使用第几个数据库
-        prefix: ''//数据表前辍即schema 表前缀，可以通过这个区分表 默认在所有的地方都加的 ：需要加的，命名空间
     });
+    var ep = new EventProxy();
+    try {
+        RedisClient.on('error', function (err) {
+            p.log('Error ' + err)
+        });
 
-    RedisClient.on('error', function (err) {
-        console.log('Error ' + err)
-    });
-    RedisClient.get(key, function (err, data) {
-        p.log(err, data)
-        if (err) return {}
-        return res.json(data);
-    })
+        //查看是否存在
+        RedisClient.exists(key, function (err, data) {
+            if (err) return res.fail(err);
+            if (data <= 0) return res.fail(key + "不存在！");
+            ep.emit("type");
+        });
+
+        //校验类型
+        ep.bind("type", function () {
+            RedisClient.type(key, function (err, data) {
+                if (err) return res.fail(err);
+                if (data == "hash") { //获取所有的hash 全量数据
+                    RedisClient.hgetall(key, function (err, data) {
+                        if (err) res.fail(err)
+                        return res.success(data);
+                    });
+                } else if (data == "string") {//获取string
+                    RedisClient.get(key, function (err, data) {
+                        if (err) res.fail(err)
+                        return res.success(data);
+                    })
+                } else if (data == "list") {
+                    RedisClient.lrange("list", 0, 100, function (err, data) {
+                        if (err) res.fail(err)
+                        return res.success(data);
+                    });
+                } else if (data == "set") {
+
+                } else if (data == "zset") {
+                    RedisClient.zrange("myzset", 0, 100, function (err, data) {
+                        if (err) res.fail(err)
+                        return res.success(data);
+                    });
+                }
+            });
+        });
+    } catch (e) {
+        if (err) return res.fail(e)
+    }
 };

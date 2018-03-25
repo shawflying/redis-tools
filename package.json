@@ -1,6 +1,6 @@
 {
   "name": "redis-tools",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "redis-tools",
   "main": "index.js",
   "scripts": {

@@ -12,7 +12,7 @@ var run = function (obj) {
         p.log('version is ' + package.version);
     } else if (obj[0] === '-h' || obj[0] === '-h' === "--help") {
         p.log(`
-        usage: http-server [options]
+        usage: redis-tools [options]
 
         options:
 

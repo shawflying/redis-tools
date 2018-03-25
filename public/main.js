@@ -46,14 +46,14 @@ $(function () {
                 });
 
                 let db = e.node.text.substring(2)
-                $.getJSON("/redis/keys?db_name="+db_name+"&db=" + db, function (data) {
+                $.getJSON("/redis/keys?db_name=" + db_name + "&db=" + db, function (data) {
                     for (let i = 0; i < data.length; i++) {
                         createNode("#" + e.node.id, e.node.id + "_key" + i, data[i], "last");   //在最后插入  
                     }
                 });
             } else {
                 let db = e.node.text.substring(2)
-                $.post("/redis/values?db_name="+db_name, { db: 1, key: e.node.text }, function (data) {
+                $.post("/redis/values?db_name=" + db_name, { db: 0, key: e.node.text }, function (data) {
                     $(".show").html(JSON.stringify(data));
                 });
             }
