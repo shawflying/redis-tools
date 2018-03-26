@@ -16,7 +16,9 @@ exports.run = function (port) {
     console.log('监听日志：' + port);
     console.log("local: " + config.base_host + port + '/' + config.app + '/login');
   });
-  server.on('error', exports.onError);
+  server.on('error', (e) => {
+    exports.onError(e, port)
+  });
   server.on('listening', function () {// HTTP 服务器的'listening'事件监听器
     var addr = server.address();
     var bind = typeof addr === 'string' ? '管道 ' + addr : '端口 ' + addr.port;
@@ -38,7 +40,7 @@ exports.normalizePort = function (val) {
   return false;
 }
 //HTTP 服务器的'error'事件监听器
-exports.onError = function (error) {
+exports.onError = function (error, port) {
   if (error.syscall !== 'listen') {
     throw error;
   }
