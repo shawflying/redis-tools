@@ -1,5 +1,5 @@
 var redis = require('redis');
-
+const p = console;
 var RedisClient = redis.createClient({
   host: "127.0.0.1",
   port: "6379",
@@ -12,8 +12,12 @@ RedisClient.on('error', function (err) {
 });
 
 //string
-// RedisClient.get(key, function (err, data) {
-//   // p.log("=======================key:", err, data)
+// RedisClient.set("dxl-brush:mystring", "ok", function (err, data) {
+//   p.log("=======================key:", err, data)
+// })
+
+// RedisClient.get("dxl-brush:mystring", function (err, data) {
+//   p.log("=======================key:", err, data)
 // })
 
 //hash  get前有h,表示hget
@@ -35,22 +39,53 @@ RedisClient.on('error', function (err) {
 // });
 
 //list 查询
-// RedisClient.lrange("myset", 0, 100, function (err, data) {
+
+// RedisClient.lpush("mylist","redis", function (err, data) {
+//   console.log("----------------------", err, data);
+// });
+// RedisClient.lpush("mylist","mongodb", function (err, data) {
 //   console.log("----------------------", err, data);
 // });
 
-// RedisClient.zrange("myzset", 0, 100, function (err, data) {
+// RedisClient.llen("mylist", function (err, data) {
+//   console.log("----------------------获取列表长度", err, data);
+// });
+
+// RedisClient.lrange("mylist", 0, 100, function (err, data) {
 //   console.log("----------------------", err, data);
 // });
 
-RedisClient.zrange("myset", 0, -1, function (err, data) {
-  console.log("----------------------", err, data);
-});
+//查看set 列表
+// RedisClient.sadd("my_set","redis", function (err, data) {
+//   console.log("----------------------", err, data);
+// });
+// RedisClient.sadd("my_set","mongodb", function (err, data) {
+//   console.log("----------------------", err, data);
+// });
+
+// RedisClient.smembers("my_set", function (err, data) {
+//   console.log("----------------------", err, data);
+// });
 
 
-//list
-
-
-//set
 
 //zset
+RedisClient.zadd("myzset", 1,"redis", function (err, data) {
+  console.log("----------------------", err, data);
+});
+RedisClient.zadd("myzset", 2,"mongodb", function (err, data) {
+  console.log("----------------------", err, data);
+});
+RedisClient.zadd("myzset", 2,"mysql", function (err, data) {
+  console.log("----------------------", err, data);
+});
+RedisClient.zadd("myzset", 3,"mysql", function (err, data) {
+  console.log("----------------------", err, data);
+});
+RedisClient.zcard("myzset", function (err, data) {
+  console.log("----------------------获取有序集合的成员数  ", err, data);
+});
+
+RedisClient.zrange("myzset", 0, 100, function (err, data) {
+  console.log("----------------------", err, data);
+});

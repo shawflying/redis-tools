@@ -44,7 +44,13 @@ exports.check_login = function (req, res, next) {
 
 //加载
 exports.main_load = function (req, res) {
-    res.success(req.headers["redis"]);
+    let data = req.headers["redis"];
+    if (!_.isEmpty(data) && !_.isEmpty(data.name)) {
+        res.success(data);
+    } else {
+        p.log(req.headers)
+        res.fail("登录失败，缓存失效")
+    }
 };
 
 //查询所有key
@@ -55,7 +61,6 @@ exports.keys = function (req, res) {
         host: redis_conf.host,
         port: redis_conf.port,
         db: db,//使用第几个数据库
-        prefix: ''//数据表前辍即schema 表前缀，可以通过这个区分表 默认在所有的地方都加的 ：需要加的，命名空间
     });
 
     RedisClient.on('error', function (err) {
@@ -71,6 +76,7 @@ exports.keys = function (req, res) {
 exports.values = function (req, res) {
     var redis_conf = req.headers["redis"];
     let key = req.body.key;
+    p.log("key:", key)
     var RedisClient = redis.createClient({
         host: redis_conf.host,
         port: redis_conf.port,
@@ -84,8 +90,9 @@ exports.values = function (req, res) {
 
         //查看是否存在
         RedisClient.exists(key, function (err, data) {
+            p.log(data)
             if (err) return res.fail(err);
-            if (data <= 0) return res.fail(key + "不存在！");
+            if (data <= 0) return res.fail(key + "已经过期了");
             ep.emit("type");
         });
 
@@ -95,25 +102,23 @@ exports.values = function (req, res) {
                 if (err) return res.fail(err);
                 if (data == "hash") { //获取所有的hash 全量数据
                     RedisClient.hgetall(key, function (err, data) {
-                        if (err) res.fail(err)
-                        return res.success(data);
+                        return res.resJsonX(err, data)
                     });
                 } else if (data == "string") {//获取string
                     RedisClient.get(key, function (err, data) {
-                        if (err) res.fail(err)
-                        return res.success(data);
+                        return res.resJsonX(err, data)
                     })
                 } else if (data == "list") {
                     RedisClient.lrange("list", 0, 100, function (err, data) {
-                        if (err) res.fail(err)
-                        return res.success(data);
+                        return res.resJsonX(err, data)
                     });
-                } else if (data == "set") {
-
+                } else if (data == "set") {//查询set 列表
+                    RedisClient.smembers(key, function (err, data) {
+                        return res.resJsonX(err, data)
+                    });
                 } else if (data == "zset") {
-                    RedisClient.zrange("myzset", 0, 100, function (err, data) {
-                        if (err) res.fail(err)
-                        return res.success(data);
+                    RedisClient.zrange("myzset", 0, 1000, function (err, data) {
+                        return res.resJsonX(err, data)
                     });
                 }
             });
