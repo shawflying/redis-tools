@@ -2,6 +2,7 @@ var _ = require("underscore")._;
 var EventProxy = require('eventproxy');
 var moment = require('moment');
 var config = require('../config');
+var { sequelize, Links } = require('./redis-tools-config');
 var co = require("co")
 var path = require("path")
 var fs = require("fs");
@@ -12,6 +13,23 @@ var redis = require('redis');
 
 //进入首页
 exports.login = function (req, res) {
+    sequelize.sync().then(function () {
+        return Links.create({
+            link_name: 'dev',
+            host: '127.0.0.1',
+            remark: '测试环境'
+        });
+    }).then(function (jane) {
+        console.log(jane.get({
+            plain: true
+        }));
+    });
+
+    sequelize.sync().then(function () {
+        return Links.findAll();
+    }).then(function (jane) {
+        p.log(JSON.stringify(jane))
+    });
     res.render('redis_login', { title: '选择登录' });
 };
 //登录session

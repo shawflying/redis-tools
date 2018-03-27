@@ -1,11 +1,27 @@
 var redis = require('redis');
 const p = console;
-var RedisClient = redis.createClient({
-  host: "127.0.0.1",
-  port: "6379",
-  db: 0,//使用第几个数据库
-  prefix: ''//数据表前辍即schema 表前缀，可以通过这个区分表 默认在所有的地方都加的 ：需要加的，命名空间
-});
+
+var nodeServer = {
+  redis: {
+    "activity": {
+      "host": "127.0.0.1",
+      "port": 6379,
+      // "user": "",
+      // "password": "",
+      "db": 0,
+      "prefix": "dxl-limt-brush:"
+    }
+  }
+}
+
+var RedisClient = redis.createClient(nodeServer.redis.activity);
+
+// var RedisClient = redis.createClient({
+//   host: "127.0.0.1",
+//   port: "6379",
+//   db: 0,//使用第几个数据库
+//   prefix: ''//数据表前辍即schema 表前缀，可以通过这个区分表 默认在所有的地方都加的 ：需要加的，命名空间
+// });
 
 RedisClient.on('error', function (err) {
   p.log('Error ' + err)
@@ -70,16 +86,16 @@ RedisClient.on('error', function (err) {
 
 
 //zset
-RedisClient.zadd("myzset", 1,"redis", function (err, data) {
+RedisClient.zadd("myzset", 1, "redis", function (err, data) {
   console.log("----------------------", err, data);
 });
-RedisClient.zadd("myzset", 2,"mongodb", function (err, data) {
+RedisClient.zadd("myzset", 2, "mongodb", function (err, data) {
   console.log("----------------------", err, data);
 });
-RedisClient.zadd("myzset", 2,"mysql", function (err, data) {
+RedisClient.zadd("myzset", 2, "mysql", function (err, data) {
   console.log("----------------------", err, data);
 });
-RedisClient.zadd("myzset", 3,"mysql", function (err, data) {
+RedisClient.zadd("myzset", 3, "mysql", function (err, data) {
   console.log("----------------------", err, data);
 });
 RedisClient.zcard("myzset", function (err, data) {

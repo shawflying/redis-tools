@@ -18,26 +18,35 @@
   "author": "shawflying",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "^1.12.4",
-    "chai": "^3.5.0",
     "co": "^4.6.0",
     "commander": "^2.15.1",
     "compression": "^1.6.2",
     "connect-busboy": "0.0.2",
     "connect-mongo": "^0.8.1",
     "cookie-parser": "^1.3.5",
+    "debug": "^3.1.0",
     "ejs": "^2.5.5",
     "errorhandler": "^1.4.2",
     "eventproxy": "*",
     "express": "^4.13.3",
     "express-session": "^1.11.3",
     "method-override": "^2.3.5",
-    "mocha": "^3.0.2",
-    "mochawesome": "^1.5.2",
     "moment": "^2.10.6",
+    "morgan": "^1.9.0",
     "redis": "^2.8.0",
     "request": "2.53.0",
     "response-time": "*",
+    "sequelize": "^4.37.4",
+    "serve-favicon": "^2.4.5",
+    "sqlite3": "^4.0.0",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "mocha": "^5.0.5",
+    "mochawesome": "^1.5.5",
+    "should": "^13.2.1",
+    "supertest": "^3.0.0"
   }
 }

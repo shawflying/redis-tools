@@ -5,6 +5,8 @@ var session = require('express-session');
 var webRouter = require('./router');
 var bodyParser = require('body-parser');
 var compression = require('compression');
+var favicon = require('serve-favicon'); // 网站图标
+var logger = require('morgan'); // 请求日志纪录
 var _ = require("underscore")._;
 var ejs = require('ejs');
 var resFormat = require('./config/res');
@@ -24,7 +26,8 @@ app.use(bodyParser.json());//body-parser 解析json格式数据 {"data":{"name":
 app.use(bodyParser.urlencoded({extended: true}));//必须的 //此项必须在 bodyParser.json 下面,为参数编码
 app.use(require('method-override')());//methodOverride中间件必须结合bodyParser中间件一起使用,为bodyParser中间件提供伪HTTP方法支持.
 app.use(require('cookie-parser')(config.session_secret));//处理每一个请求的cookie。 通过req.cookies可以取到传过来的cookie，并把它们转成对象。
-
+app.use(favicon(__dirname + '/public/img/logo.png'));
+app.use(logger('dev'));
 app.use(resFormat.resFormat)
 
 app.use(session({
