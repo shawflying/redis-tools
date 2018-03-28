@@ -5,9 +5,7 @@ function createNode(parent_node, new_node_id, new_node_text, position) {
     $('#jstree').jstree('create_node', $(parent_node), { "text": new_node_text, "id": new_node_id }, position, false, false);
 }
 $(function () {
-    $.getJSON("/redis/main/load", function (data) {
-
-
+    $.getJSON("/redis/links", function (data) {
         var links = [];//链接
         for (let i = 0; i < data.data.length; i++) {
 

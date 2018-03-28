@@ -9,33 +9,6 @@ var fs = require("fs");
 var p = console;
 var redis = require('redis');
 
-//登录session
-exports.loginSession = function (req, res) {
-    sequelize.sync().then(function () {
-        return Links.findOne({
-            where: {
-                link_name: req.body.name
-            }
-        });
-    }).then(function (data) {
-        p.log(data)
-        if (!data == null && data.link_name == req.body.name) {
-            //已有,跟新
-            return res.success("login success");
-        } else {
-            sequelize.sync().then(function () {
-                return Links.create({
-                    link_name: req.body.name,
-                    host: req.body.host,
-                    port: req.body.port
-                });
-            }).then(function (data) {
-                return res.success("login success");
-            });
-        }
-    });
-};
-
 exports.main = function (req, res) {
     res.render('redis_main', { title: '查看页面' });
 };
@@ -53,6 +26,67 @@ exports.main_load = function (req, res) {
     }).catch(e => {
         res.success([]);
     });
+};
+
+//添加记录
+exports.links_add = function (req, res) {
+    sequelize.sync().then(function () {
+        return Links.findOne({
+            where: {
+                link_name: req.body.link_name
+            }
+        });
+    }).then(function (data) {
+        p.log(data)
+
+        if (_.isEmpty(data) || _.isEmpty(data.dataValues) || _.isEmpty(data.dataValues.link_name)) {//不存在时，可以添加
+            sequelize.sync().then(function () {
+                return Links.create({
+                    link_name: req.body.link_name,
+                    host: req.body.host,
+                    port: req.body.port
+                });
+            }).then(function (data) {
+                return res.success("添加成功");
+            }).catch(e => {
+                return res.fail("添加失败");
+            });
+        } else {//修改
+            sequelize.sync().then(function () {
+                return Links.update({
+                    link_name: req.body.link_name,
+                    host: req.body.host,
+                    port: req.body.port
+                }, { where: { id: data.dataValues.id } });
+            }).then(function (data) {
+                return res.success("修改成功");
+            }).catch(e => {
+                return res.fail("修改失败");
+            });
+        }
+    })
+};
+//添加记录
+exports.links_del = function (req, res) {
+    sequelize.sync().then(function () {
+        return Links.findOne({
+            where: {
+                link_name: req.body.link_name
+            }
+        });
+    }).then(function (data) {
+        if (_.isEmpty(data) || _.isEmpty(data.dataValues) || _.isEmpty(data.dataValues.link_name)) {//不存在时，可以添加
+            return res.success("不存在");
+        } else {//修改
+            sequelize.sync().then(function () {
+                return Links.destroy({ where: { id: data.dataValues.id } });
+            }).then(function (data) {
+                return res.success("删除成功");
+            }).catch(e => {
+                return res.fail("删除失败");
+            });
+        }
+    })
 };
 
 //查询所有key

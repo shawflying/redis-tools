@@ -26,21 +26,28 @@ var Links = sequelize.define('links', {
     },
     link_name: {
         type: Sequelize.STRING,
-        unique: "uk_t_store"//唯一索引
+        allowNull: false,
+        comment: "链接名称"
     },
-    host: Sequelize.STRING,
-    name: {
+    host: {
         type: Sequelize.STRING,
-        comment: "用户名"
-    },
-    pwd: {
-        type: Sequelize.STRING,
-        comment: "密码"
+        defaultValue: "127.0.0.1",
+        comment: "host"
     },
     port: {
         type: Sequelize.INTEGER,
         defaultValue: 6379,
-        comment: "端口号"
+        comment: "端口号",
+        validate: {
+            isNumeric: {
+                args: true,
+                msg: '阀值必须为数字'
+            }
+        }
+    },
+    auth: {
+        type: Sequelize.STRING,
+        comment: "授权"
     },
     remark: Sequelize.STRING,
 });
