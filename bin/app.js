@@ -14,7 +14,7 @@ exports.run = function (port) {
   //在所有网络接口上监听提供的端口号
   server.listen(port, function () {
     console.log('监听日志：' + port);
-    console.log("local: " + config.base_host + port + '/' + config.app + '/login');
+    console.log("local: " + config.base_host + port + '/' + config.app + '/index');
   });
   server.on('error', (e) => {
     exports.onError(e, port)

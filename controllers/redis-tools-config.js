@@ -26,7 +26,7 @@ var Links = sequelize.define('links', {
     },
     link_name: {
         type: Sequelize.STRING,
-
+        unique: "uk_t_store"//唯一索引
     },
     host: Sequelize.STRING,
     name: {
