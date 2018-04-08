@@ -7,9 +7,8 @@ router.get('/redis/index', redis.main);
 
 //配置信息加载
 router.get('/redis/links', redis.main_load);//加载配置信息
-router.post('/redis/links', redis.links_add);//添加记录
+router.post('/redis/links', redis.links_add);//添加记录、或者更新
 router.delete('/redis/links/:link_name', redis.links_del);//删除
-router.put('/redis/links/', redis.links_del);//更新
 
 
 router.get('/redis/keys', redis.keys);

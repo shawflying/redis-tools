@@ -4,10 +4,12 @@
 function createNode(parent_node, new_node_id, new_node_text, position) {
     $('#jstree').jstree('create_node', $(parent_node), { "text": new_node_text, "id": new_node_id }, position, false, false);
 }
-var delete_link_name = "";
+var com_link_name = "";//当前选择的链接名称
+var com_links_list = [];//链接列表，加载后的链接名称
 $(function () {
     $.getJSON("/redis/links", function (data) {
         var links = [];//链接
+        com_links_list = data.data;
         for (let i = 0; i < data.data.length; i++) {
 
             let db_list = [];//返回列表 
@@ -41,7 +43,7 @@ $(function () {
             console.log("text:" + e.node.text)
             console.log("id:" + e.node.id)
             console.log("id:" + JSON.stringify(e.node))
-            delete_link_name = e.node.text;
+            com_link_name = e.node.text;
             //links 层 不进行请求处理
             if (e.node.parent == "#") {
                 return
@@ -88,41 +90,55 @@ $(".btn_create").click(function () {
 });
 //删除
 $(".btn_delete").click(function () {
-    if (delete_link_name == "") {
+    if (com_link_name == "") {
         alert("请选择数据库");
         return;
     }
+    let item = {};
+    com_links_list.forEach(function (m, i) {
+        if (m.link_name == com_link_name) {
+            item = m
+        }
+    })
+    if (item.link_name == "" || item.link_name == null || item.link_name == undefined) {
+        alert("请选择正确的数据库");
+        return;
+    }
     $.ajax({
-        url: "/redis/links/" + delete_link_name,
+        url: "/redis/links/" + com_link_name,
         type: 'DELETE',
         success: function (data) {
             if (data.code == 1) {
                 alert("删除成功");
                 location.reload();
             } else {
-                alert("链接失败");
+                alert(data.msg);
             }
         }
     });
 });
-//删除
+//编辑
 $(".btn_edit").click(function () {
-    if (delete_link_name == "") {
+    if (com_link_name == "") {
         alert("请选择数据库");
         return;
     }
-    $.ajax({
-        url: "/redis/links/" + delete_link_name,
-        type: 'DELETE',
-        success: function (data) {
-            if (data.code == 1) {
-                alert("删除成功");
-                location.reload();
-            } else {
-                alert("链接失败");
-            }
+    let item = {};
+    com_links_list.forEach(function (m, i) {
+        if (m.link_name == com_link_name) {
+            item = m
         }
-    });
+    })
+    if (item.link_name == "" || item.link_name == null || item.link_name == undefined) {
+        alert("请选择正确的数据库");
+        return;
+    }
+    $(".txtName").val(item.link_name);
+    $(".txtIp").val(item.host);
+    $(".txtPwd").val(item.auth);
+    $(".txtPort").val(item.port);
+    $(".alert_bg").show();
+    $(".add_con").show();
 });
 $(".btn-submit").click(function () {
     var name = $(".txtName").val();
@@ -139,7 +155,7 @@ $(".btn-submit").click(function () {
         if (data.code == 1) {
             location.reload();
         } else {
-            alert("链接失败");
+            alert(data.msg);
         }
     });
 });

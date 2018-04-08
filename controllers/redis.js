@@ -76,7 +76,7 @@ exports.links_del = function (req, res) {
         });
     }).then(function (data) {
         if (_.isEmpty(data) || _.isEmpty(data.dataValues) || _.isEmpty(data.dataValues.link_name)) {//不存在时，可以添加
-            return res.success("不存在");
+            return res.fail("链接不存在");
         } else {//修改
             sequelize.sync().then(function () {
                 return Links.destroy({ where: { id: data.dataValues.id } });
