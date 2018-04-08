@@ -89,6 +89,42 @@ exports.links_del = function (req, res) {
     })
 };
 
+//查看当前redis 信息
+exports.redis_info = function (req, res) {
+    let link_name = req.params.link_name;
+
+    //通过link_id 获取配置信息
+    sequelize.sync().then(function () {
+        return Links.findOne({
+            where: {
+                link_name: link_name
+            }
+        });
+    }).then(function (data) {
+        var RedisClient = new Redis({
+            host: data.dataValues.host,
+            port: data.dataValues.port
+        });
+
+        RedisClient.info(function (err, data) {
+            if (err) return res.json("");
+            // p.log(err, data)
+            let list = data.split("\r\n").filter(function (m) {
+                if (m.indexOf("#") > -1) return false
+                if (m == "") return false
+                if (m.indexOf(":") > -1) return true
+                return false
+            });
+            let mydata = {};
+            list.forEach((m, i) => {
+                mydata[m.split(":")[0]] = m.split(":")[1]
+            });
+            p.log(mydata)
+            return res.json(mydata);
+        })
+    });
+};
+
 //查询所有key
 exports.keys = function (req, res) {
     let db = req.query.db;
@@ -113,7 +149,7 @@ exports.keys = function (req, res) {
         });
         RedisClient.keys("**", function (err, data) {
             p.log(err, data)
-            if (err) return []
+            if (err) data = []
             return res.json(data);
         })
     });
