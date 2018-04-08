@@ -4,6 +4,7 @@
 function createNode(parent_node, new_node_id, new_node_text, position) {
     $('#jstree').jstree('create_node', $(parent_node), { "text": new_node_text, "id": new_node_id }, position, false, false);
 }
+var delete_link_name = "";
 $(function () {
     $.getJSON("/redis/links", function (data) {
         var links = [];//链接
@@ -40,7 +41,7 @@ $(function () {
             console.log("text:" + e.node.text)
             console.log("id:" + e.node.id)
             console.log("id:" + JSON.stringify(e.node))
-
+            delete_link_name = e.node.text;
             //links 层 不进行请求处理
             if (e.node.parent == "#") {
                 return
@@ -75,4 +76,85 @@ $(function () {
             }
         });
     });
+});
+
+
+
+
+//增加
+$(".btn_create").click(function () {
+    $(".alert_bg").show();
+    $(".add_con").show();
+});
+//删除
+$(".btn_delete").click(function () {
+    if (delete_link_name == "") {
+        alert("请选择数据库");
+        return;
+    }
+    $.ajax({
+        url: "/redis/links/" + delete_link_name,
+        type: 'DELETE',
+        success: function (data) {
+            if (data.code == 1) {
+                alert("删除成功");
+                location.reload();
+            } else {
+                alert("链接失败");
+            }
+        }
+    });
+});
+//删除
+$(".btn_edit").click(function () {
+    if (delete_link_name == "") {
+        alert("请选择数据库");
+        return;
+    }
+    $.ajax({
+        url: "/redis/links/" + delete_link_name,
+        type: 'DELETE',
+        success: function (data) {
+            if (data.code == 1) {
+                alert("删除成功");
+                location.reload();
+            } else {
+                alert("链接失败");
+            }
+        }
+    });
+});
+$(".btn-submit").click(function () {
+    var name = $(".txtName").val();
+    var ip = $(".txtIp").val();
+    var pwd = $(".txtPwd").val();
+    var port = $(".txtPort").val();
+    var params = {
+        link_name: name,
+        ip,
+        pwd,
+        port
+    }
+    $.post("/redis/links", params, function (data) {
+        if (data.code == 1) {
+            location.reload();
+        } else {
+            alert("链接失败");
+        }
+    });
+});
+
+//隐藏
+$(".btn-cancel").click(function () {
+    $(".alert_bg").hide();
+    $(".add_con").hide();
+});
+
+$(".alert_bg").click(function (e) {
+    $(".alert_bg").hide();
+    $(".add_con").hide();
+});
+
+$(".add_con").click(function (e) {
+    e.stopPropagation();
 });

@@ -20,12 +20,45 @@
 </style>
 
 <body>
-    <div class="top">
-        <div class="title">redis manager</div>
+    <div class="menu">
+        <div class="con">
+                连接添加：
+                <button class="btn_create">create</button>
+                <button class="btn_delete">delete</button>
+                <button class="btn_edit">edit</button>
+        </div>
+        <div class="dealValue">
+            数据操作：
+            <button>添加值</button>
+            <button>删除</button>
+            <button>设置过期时间</button>
+            <button>查看redis 相关信息</button>
+        </div>
     </div>
     <div id="jstree"></div>
     <div class="data">
-        <div contenteditable="true" class="show" placeholder="显示结果"></div>
+        <div contenteditable="true" class="show"></div>
+    </div>
+
+    <div class="alert_bg" hidden>
+
+    </div>
+    <div class="add_con" hidden>
+            <p class="title">创建连接</p>
+            <br/>
+            <input type="text" class="txtName" placeholder="输入登录名称">
+            <br/>
+            <input type="text" class="txtIp" placeholder="ip" value="127.0.0.1">
+            <br/>
+            <input type="text" class="txtPwd" placeholder="Auth">
+            <br/>
+            <input type="text" class="txtPort" placeholder="端口号" value="6379">
+            <br/>
+    
+            <button class="test">点击测试连接</button>
+            <br/>
+            <button class="btn-cancel">Cancel</button>
+            <button class="btn-submit">OK</button>
     </div>
 </body>
 

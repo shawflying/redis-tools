@@ -7,10 +7,10 @@ var co = require("co")
 var path = require("path")
 var fs = require("fs");
 var p = console;
-var redis = require('redis');
+var Redis = require('ioredis');
 
 exports.main = function (req, res) {
-    res.render('redis_main', { title: '查看页面' });
+    res.render('redis_main', { title: 'Redis Manager' });
 };
 
 //加载
@@ -71,7 +71,7 @@ exports.links_del = function (req, res) {
     sequelize.sync().then(function () {
         return Links.findOne({
             where: {
-                link_name: req.body.link_name
+                link_name: req.params.link_name
             }
         });
     }).then(function (data) {
@@ -102,7 +102,7 @@ exports.keys = function (req, res) {
             }
         });
     }).then(function (data) {
-        var RedisClient = redis.createClient({
+        var RedisClient = new Redis({
             host: data.dataValues.host,
             port: data.dataValues.port,
             db: db,//使用第几个数据库
@@ -135,7 +135,7 @@ exports.values = function (req, res) {
             }
         });
     }).then(function (data) {
-        var RedisClient = redis.createClient({
+        var RedisClient = new Redis({
             host: data.dataValues.host,
             port: data.dataValues.port,
             db: db,//使用第几个数据库
@@ -188,6 +188,4 @@ exports.values = function (req, res) {
             return res.fail(e)
         }
     });
-
-
 };
